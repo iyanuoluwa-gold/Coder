@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modal Example</title>
+
+<style>
+  /* Styles for the modal overlay */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    overflow: auto;
+  }
+
+  /* Styles for the modal content */
+  .modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    max-width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  /* Close button style */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* Style for small buttons */
+  .small-button {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+
+  /* Style for aligning buttons left and right */
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  /* Style for the modal image */
+  .modal-content-inner img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Additional styles for modal headings and text */
+  .modal-content-inner h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .modal-content-inner p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- First "Read More" button -->
+<button class="openModalBtn" data-modal-id="modal1" type="button">Read More 1</button>
+
+<!-- Second "Read More" button -->
+<button class="openModalBtn" data-modal-id="modal2" type="button">Read More 2</button>
+
+<!-- Add more buttons as needed -->
+<!-- Third "Read More" button -->
+<button class="openModalBtn" data-modal-id="modal3" type="button">Read More 3</button>
+
+<!-- Modals -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-content-inner">
+      <h2 id="modalHeading1"></h2>
+      <img id="modalImage1" src="" alt="Modal Image 1">
+      <p id="modalText1"></p>
+    </div>
+    <div class="modal-buttons">
+      <button id="prevBtn1" class="small-button">Previous</button>
+      <button id="nextBtn1" class="small-button">Next</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal2" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-content-inner">
+      <h2 id="modalHeading2"></h2>
+      <img id="modalImage2" src="" alt="Modal Image 2">
+      <p id="modalText2"></p>
+    </div>
+    <div class="modal-buttons">
+      <button id="prevBtn2" class="small-button">Previous</button>
+      <button id="nextBtn2" class="small-button">Next</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal3" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-content-inner">
+      <h2 id="modalHeading3"></h2>
+      <img id="modalImage3" src="" alt="Modal Image 3">
+      <p id="modalText3"></p>
+    </div>
+    <div class="modal-buttons">
+      <button id="prevBtn3" class="small-button">Previous</button>
+      <button id="nextBtn3" class="small-button">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  const modalContents = [
+    {
+      heading: "Heading 1",
+      content: "Content 1",
+      imageSrc: "image1.jpg",
+    }, 
+    {
+      heading: "Heading 2",
+      content: "Content 2",
+      imageSrc: "image2.jpg",
+    },
+    {
+      heading: "Hea6ding 3",
+      content: "Content 3",
+      imageSrc: "image3.jpg",
+    },
+    // Add more content objects as needed
+  ];
+
+  const currentContentIndices = new Array(modalContents.length).fill(0);
+
+  document.querySelectorAll(".openModalBtn").forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      const modalId = `modal${index + 1}`;
+      const modal = document.getElementById(modalId);
+      modal.style.display = "block";
+      updateModalContent(index);
+    });
+  });
+
+  function updateModalContent(index) {
+    const modalContent = modalContents[index];
+    const modalId = `modal${index + 1}`;
+    const modalHeading = document.getElementById(`modalHeading${index + 1}`);
+    const modalImage = document.getElementById(`modalImage${index + 1}`);
+    const modalText = document.getElementById(`modalText${index + 1}`);
+    const prevBtn = document.getElementById(`prevBtn${index + 1}`);
+    const nextBtn = document.getElementById(`nextBtn${index + 1}`);
+    const currentContentIndex = currentContentIndices[index];
+
+    modalHeading.textContent = modalContent.heading;
+    modalImage.src = modalContent.imageSrc;
+    modalText.textContent = modalContent.content;
+
+    prevBtn.addEventListener("click", () => {
+      if (currentContentIndex > 0) {
+        currentContentIndices[index]--;
+        updateModalContent(index);
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentContentIndex < modalContents[index].length - 1) {
+        currentContentIndices[index]++;
+        updateModalContent(index);
+      }
+    });
+  }
+
+  document.querySelectorAll(".close").forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      const modalId = `modal${index + 1}`;
+      const modal = document.getElementById(modalId);
+      modal.style.display = "none";
+    });
+  });
+</script>
+
+</body>
+</html>
